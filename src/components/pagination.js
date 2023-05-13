@@ -8,7 +8,7 @@ const Pagination = ({ data, pageSize, currentPage, setCurrentPage, themeColor })
     setCurrentPage(pageNumber);
   };
 
-  console.log(themeColor);
+  
 
   const isFirstPage = currentPage === 1;
   const isLastPage = currentPage === totalPages;
