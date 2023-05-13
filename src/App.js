@@ -1,25 +1,74 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import FetchData from "./components/fetchdata";
+import Home from "./components/home";
+import ListView from "./components/listview";
+
+
+const BASE_URL = "https://pokeapi.co/api/v2/pokemon/";
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+	const [pageSize, setPageSize] = useState(8);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [data, setData] = useState(null);
+	const [query, setQuery] = useState(null);
+
+	/*
+	const [apiurl, setApiurl] = useState(
+		`${BASE_URL}?limit=${pageSize}&offset=${(currentPage - 1) * pageSize}`,
+	);
+
+	
+
+	 const [data, setData] = useState(FetchData({ apiurl })); */
+
+	useEffect(() => {
+		fetch(`${BASE_URL}?limit=${pageSize}&offset=${(currentPage - 1) * pageSize}`)
+		.then(res => res.json())
+		.then(res => setData(res))
+		.catch(err => console.log(err));
+	}, [pageSize, currentPage])
+
+	const [searchUrl, setSearchUrl] = useState(`${BASE_URL}/${query}`);
+
+	const [searchResult, setSearchResult] = useState(null);
+
+	useEffect(() => {
+		if (query) {
+			fetch(searchUrl)
+				.then((res) => res.json())
+				.then((res) => setSearchResult(res))
+				.catch((error) => console.log(error));
+		}
+	}, [searchUrl, query]);
+
+	return (
+		<>
+			<Routes>
+				<Route
+					index
+					element={<Home setQuery={setQuery} />}
+				/>
+				<Route
+					path="/viewall"
+					element={
+						<ListView
+							query={query}
+							data={data}
+							pageSize={pageSize}
+							setPageSize={setPageSize}
+							currentPage={currentPage}
+							setCurrentPage={setCurrentPage}
+							searchResult={searchResult}
+              setQuery={setQuery}
+						/>
+					}
+				/>
+			</Routes>
+		</>
+	);
 }
 
 export default App;
