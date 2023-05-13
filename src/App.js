@@ -4,12 +4,9 @@ import FetchData from "./components/fetchdata";
 import Home from "./components/home";
 import ListView from "./components/listview";
 
-
 const BASE_URL = "https://pokeapi.co/api/v2/pokemon/";
 
-
 function App() {
-
 	const [pageSize, setPageSize] = useState(8);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [data, setData] = useState(null);
@@ -25,24 +22,28 @@ function App() {
 	 const [data, setData] = useState(FetchData({ apiurl })); */
 
 	useEffect(() => {
-		fetch(`${BASE_URL}?limit=${pageSize}&offset=${(currentPage - 1) * pageSize}`)
-		.then(res => res.json())
-		.then(res => setData(res))
-		.catch(err => console.log(err));
-	}, [pageSize, currentPage])
+		fetch(
+			`${BASE_URL}?limit=${pageSize}&offset=${(currentPage - 1) * pageSize}`,
+		)
+			.then((res) => res.json())
+			.then((res) => setData(res))
+			.catch((err) => console.log(err));
+	}, [pageSize, currentPage]);
 
 	const [searchUrl, setSearchUrl] = useState(`${BASE_URL}/${query}`);
 
-	const [searchResult, setSearchResult] = useState(null);
+	
 
 	useEffect(() => {
 		if (query) {
-			fetch(searchUrl)
+			fetch(
+				`${BASE_URL}/${query}`
+			)
 				.then((res) => res.json())
-				.then((res) => setSearchResult(res))
+				.then((res) => setData(res))
 				.catch((error) => console.log(error));
 		}
-	}, [searchUrl, query]);
+	}, [ query]);
 
 	return (
 		<>
@@ -61,8 +62,7 @@ function App() {
 							setPageSize={setPageSize}
 							currentPage={currentPage}
 							setCurrentPage={setCurrentPage}
-							searchResult={searchResult}
-              setQuery={setQuery}
+							setQuery={setQuery}
 						/>
 					}
 				/>
