@@ -77,7 +77,7 @@ const ListView = ({
 					</div>
 				</>
 			) : (
-				<p className="text-center items-center">...loading</p>
+				<p className="text-center items-center my-auto">...loading</p>
 			)}
 			{isOpen && (
 				<Modal
