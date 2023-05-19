@@ -22,10 +22,11 @@ const ListView = ({
 
 	// Logic for displaying page numbers
 	const pageNumbers = [];
-	for (let i = 1; i <= Math.ceil(data.results.length / pageSize); i++) {
-		pageNumbers.push(i);
+	if (data) {
+		for (let i = 1; i <= Math.ceil(data.results.length / pageSize); i++) {
+			pageNumbers.push(i);
+		}
 	}
-
 	// modal logic
 	const [isOpen, setIsOpen] = useState(searchResult);
 	// selected Item
@@ -36,35 +37,48 @@ const ListView = ({
 	const [themeColor, setThemeColor] = useState("pink-500");
 
 	return (
-		<div className="flex flex-col min-h-screen 
-		bg-slate-200 pb-12">
-			<TopBar setQuery={setQuery} 
-			setThemeButton={setThemeButton}
-			themeColor={themeColor} />
-			<div className="flex-1 overflow-y-auto
-			">
-				<List
-					data={data}
-					setSelectedItem={setSelectedItem}
-					setIsOpen={setIsOpen}
-				/>
-			</div>
-			<div className="flex justify-around items-center px-6 py-1">
-				<Pagination
-					pageSize={pageSize}
-					setCurrentPage={setCurrentPage}
-					currentPage={currentPage}
-					data={data}
-					themeColor={themeColor}
-				/>
-				<div className="bg-white pl-2 p-1 rounded-md shadow-xl shadow-slate-400 " >Items per page: {" "}
-				<PageDropdown
-					pageSize={pageSize}
-					setPageSize={setPageSize}
-					setCurrentPage={setCurrentPage}
-				/>
-				</div>
-			</div>
+		<div
+			className="flex flex-col min-h-screen 
+		bg-slate-200 pb-12"
+		>
+			<TopBar
+				setQuery={setQuery}
+				setThemeButton={setThemeButton}
+				themeColor={themeColor}
+			/>
+			{data ? (
+				<>
+					<div
+						className="flex-1 overflow-y-auto
+			"
+					>
+						<List
+							data={data}
+							setSelectedItem={setSelectedItem}
+							setIsOpen={setIsOpen}
+						/>
+					</div>
+					<div className="flex justify-around items-center px-6 py-1">
+						<Pagination
+							pageSize={pageSize}
+							setCurrentPage={setCurrentPage}
+							currentPage={currentPage}
+							data={data}
+							themeColor={themeColor}
+						/>
+						<div className="bg-white pl-2 p-1 rounded-md shadow-xl shadow-slate-400 ">
+							Items per page:{" "}
+							<PageDropdown
+								pageSize={pageSize}
+								setPageSize={setPageSize}
+								setCurrentPage={setCurrentPage}
+							/>
+						</div>
+					</div>
+				</>
+			) : (
+				<p className="text-center items-center">...loading</p>
+			)}
 			{isOpen && (
 				<Modal
 					item={selectedItem}
@@ -72,8 +86,10 @@ const ListView = ({
 				/>
 			)}
 			{themeButton && (
-				<ThemeModal setThemeButton={setThemeButton} 
-				setThemeColor={setThemeColor} />
+				<ThemeModal
+					setThemeButton={setThemeButton}
+					setThemeColor={setThemeColor}
+				/>
 			)}
 		</div>
 	);
