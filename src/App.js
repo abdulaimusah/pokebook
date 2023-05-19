@@ -49,11 +49,11 @@ function App() {
 		<>
 			<Routes>
 				<Route
-					index
+					path="somecoolnothing"
 					element={<Home setQuery={setQuery} />}
 				/>
 				<Route
-					path="/viewall"
+					index
 					element={
 						<ListView
 							query={query}

@@ -17,6 +17,7 @@ const Pagination = ({ data, pageSize, currentPage, setCurrentPage, themeColor })
 
   return (
     <div className="bg-white rounded-md px-4 shadow-xl shadow-slate-400" >
+      <button className="hidden text-green-500 text-yellow-500">hiddend</button>
       <div>
         {isFirstPage ? null : (
           <>
@@ -36,7 +37,6 @@ const Pagination = ({ data, pageSize, currentPage, setCurrentPage, themeColor })
             key={prevPage}
             onClick={() => handlePageClick(prevPage)}
             className="inline-block py-1 px-2 rounded-md 
-            text-green-500 text-yellow-500
              text-blue-600 mr-2 "
           >
             Prev
